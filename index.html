@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>光影瞬间</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      crossorigin="anonymous"
+    />
+    <script type="module" crossorigin src="/assets/index-BWhw8TB3.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CaB6BVam.css">
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script>
+      // 在页面加载时生成与导航栏相机图标一致的favicon
+      document.addEventListener("DOMContentLoaded", function () {
+        // 创建canvas元素绘制图标
+        const canvas = document.createElement("canvas");
+        canvas.width = 32; // favicon标准尺寸
+        canvas.height = 32;
+        const ctx = canvas.getContext("2d");
+
+        // 创建渐变背景（与导航栏图标风格匹配）
+        const gradient = ctx.createLinearGradient(0, 0, 32, 32);
+        gradient.addColorStop(0, "#165DFF"); // 主色调
+        gradient.addColorStop(1, "#7B61FF"); // 辅助色
+
+        // 绘制圆角矩形背景
+        ctx.beginPath();
+        const radius = 6; // 圆角大小
+        ctx.moveTo(radius, 0);
+        ctx.lineTo(32 - radius, 0);
+        ctx.arcTo(32, 0, 32, radius, radius);
+        ctx.lineTo(32, 32 - radius);
+        ctx.arcTo(32, 32, 32 - radius, 32, radius);
+        ctx.lineTo(radius, 32);
+        ctx.arcTo(0, 32, 0, 32 - radius, radius);
+        ctx.lineTo(0, radius);
+        ctx.arcTo(0, 0, radius, 0, radius);
+        ctx.closePath();
+        ctx.fillStyle = gradient;
+        ctx.fill();
+
+        // 检查Font Awesome 6是否加载
+        const checkFont = setInterval(() => {
+          // 尝试设置字体并检查
+          ctx.font = '1px "Font Awesome 6 Free"';
+          if (ctx.font.includes("Font Awesome")) {
+            clearInterval(checkFont);
+
+            // 绘制相机图标（fa-camera-retro的Unicode是f083）
+            ctx.fillStyle = "white"; // 图标颜色
+            ctx.font = 'bold 18px "Font Awesome 6 Free"'; // 使用Font Awesome字体
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText("\uf083", 16, 16); // 绘制相机图标
+
+            // 将canvas转换为图片并设置为favicon
+            const favicon = document.createElement("link");
+            favicon.rel = "icon";
+            favicon.type = "image/png";
+            favicon.href = canvas.toDataURL("image/png");
+
+            // 添加favicon到head
+            document.head.appendChild(favicon);
+          }
+        }, 100);
+
+        // 超时保护
+        setTimeout(() => clearInterval(checkFont), 3000);
+      });
+    </script>
+  </body>
+</html>
