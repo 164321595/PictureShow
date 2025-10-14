@@ -1,7 +1,7 @@
 [{
         "id": 11,
         "title": "自拍的摄影者",
-        "description": "画面呈现出一位摄影者手持佳能相机进行自拍的场景，展现出摄影者与摄影器材的互动瞬间，充满生活与创作气息。",
+        "description": "画面呈现出一位摄影者手持佳能相机进行自拍的场景，展现出摄影者与摄影器材的互动瞬间，充满生活与创作气息。b（￣▽￣）d　",
         "category": "人物",
         "imageUrl": "./photos/self.jpg",
         "isFeatured": true,
@@ -88,21 +88,21 @@
         "shutterSpeed": "AUTO",
         "iso": "AUTO"
     },
-    {
-        "id": 6,
-        "title": "黄色小花",
-        "description": "一朵黄色的小花，花瓣舒展，在暗色背景的衬托下，显得格外明亮鲜艳，展现出植物花朵的清新与活力。",
-        "category": "微距",
-        "imageUrl": "./photos/flower.jpg",
-        "isFeatured": true,
-        "takenDate": "2025-08-26",
-        "location": "户外花丛",
-        "camera": "Canon EOS 70D",
-        "lens": "Canon EF-S 18-55mm f/3.5-5.6 IS II",
-        "aperture": "f/5.0",
-        "shutterSpeed": "AUTO",
-        "iso": "AUTO"
-    },
+{
+    "id": 6,
+    "title": "菊芋花",
+    "description": "一朵绽放的菊芋花，花瓣舒展，在暗色背景的衬托下，明亮鲜艳，尽显菊芋花朵的清新与活力。菊芋是菊科向日葵属的多年生草本植物，其地下块茎可供食用 。",
+    "category": "微距",
+    "imageUrl": "./photos/flower.jpg",
+    "isFeatured": true,
+    "takenDate": "2025-08-26",
+    "location": "户外花丛",
+    "camera": "Canon EOS 70D",
+    "lens": "Canon EF-S 18-55mm f/3.5-5.6 IS II",
+    "aperture": "f/5.0",
+    "shutterSpeed": "AUTO",
+    "iso": "AUTO"
+} ,
     {
         "id": 8,
         "title": "童话小屋",
@@ -170,21 +170,21 @@
         "shutterSpeed": "AUTO",
         "iso": "AUTO"
     },
-    {
-        "id": 7,
-        "title": "带刺果实",
-        "description": "树枝上挂着带刺的果实，周围绿叶相伴，在阳光的照射下，展现出植物果实的独特形态与自然质感。",
-        "category": "自然",
-        "imageUrl": "./photos/fruit.jpg",
-        "isFeatured": false,
-        "takenDate": "2025-08-20",
-        "location": "树林",
-        "camera": "Canon EOS 70D",
-        "lens": "Canon EF-S 18-55mm f/3.5-5.6 IS II",
-        "aperture": "f/5.0",
-        "shutterSpeed": "AUTO",
-        "iso": "AUTO"
-    },
+{
+    "id": 7,
+    "title": "板栗果实",
+    "description": "树枝上挂着被带刺总苞包裹的板栗果实，周围绿叶相伴，在阳光的照射下，展现出板栗独特的形态与自然质感。板栗是壳斗科栗属植物的果实，具有较高的食用价值。",
+    "category": "自然",
+    "imageUrl": "./photos/fruit.jpg",
+    "isFeatured": false,
+    "takenDate": "2025-08-20",
+    "location": "树林",
+    "camera": "Canon EOS 70D",
+    "lens": "Canon EF-S 18-55mm f/3.5-5.6 IS II",
+    "aperture": "f/5.0",
+    "shutterSpeed": "AUTO",
+    "iso": "AUTO"
+} ,
     {
         "id": 5,
         "title": "动漫手办",
@@ -199,5 +199,41 @@
         "aperture": "f/5.0",
         "shutterSpeed": "AUTO",
         "iso": "AUTO"
+    },
+    {
+    "id": 14,
+    "title": "蟛蜞菊特写集",
+    "description": "聚焦于蟛蜞菊，呈现其花瓣的细腻纹理与花蕊的精巧结构，在不同角度下，花朵都散发着清新活力，尽显这一植物花朵之美。",
+    "category": "微距",
+    "imageUrl": "./photos/yellow_flower_collection/flower1.jpg",
+    "isFeatured": true,
+    "isCollection": true,
+    "collectionImages": [
+        "./photos/yellow_flower_collection/flower1.jpg",
+        "./photos/yellow_flower_collection/flower2.jpg"
+    ],
+    "collectionDescription": "精心捕捉蟛蜞菊的不同姿态，从花瓣的舒展到花蕊的细节，每一张都试图展现它在光影下的独特魅力，带人们近距离感受这抹明媚的生机。",
+    "takenDate": "2025-10-14",
+    "location": "福大铜盘校区",
+    "camera": "Canon EOS 70D",
+    "lens": "Canon EF-S 18-55mm f/3.5-5.6 IS II",
+    "aperture": "f/5.0",
+    "shutterSpeed": "AUTO",
+    "iso": "AUTO"
+},
+    {
+    "id": 15,
+    "title": "马缨丹绽放",
+    "description": "马缨丹花朵色彩丰富，粉、红、黄等颜色交织，簇拥成球状，在翠绿叶片衬托下，显得艳丽又富有生机，尽显其独特的花姿与色彩之美。",
+    "category": "微距",
+    "imageUrl": "./photos/lantana.jpg",
+    "isFeatured": true,
+    "takenDate": "2025-10-14",
+    "location": "福大铜盘校区",
+    "camera": "Canon EOS 70D",
+    "lens": "Canon EF-S 18-55mm f/3.5-5.6 IS II",
+    "aperture": "f/5.0",
+    "shutterSpeed": "AUTO",
+    "iso": "AUTO"
     }
 ]
