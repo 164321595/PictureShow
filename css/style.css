@@ -1,0 +1,623 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
+
+:root {
+    /* Acid Brutalist Theme */
+    --text-main: #ffffff;
+    --text-muted: #888;
+    --accent-color: #ccff00;
+    /* Acid Lime */
+    --accent-gradient: linear-gradient(135deg, #ccff00 0%, #99cc00 100%);
+    /* Sharper gradient */
+    --bg-color: #050505;
+    /* Deepest Black */
+    --card-bg: #111;
+    --sidebar-width: 80px;
+    --sidebar-expanded-width: 280px;
+    --transition-speed: 0.6s;
+    --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: none;
+    /* Custom Cursor */
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    /* Cleaner body font */
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    overflow-x: hidden;
+}
+
+/* --- Shocking Effects Structure --- */
+.cursor-follower {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99999;
+    mix-blend-mode: difference;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s;
+}
+
+.marquee-container {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%) rotate(-15deg);
+    /* Dynamic Angle */
+    width: 200vw;
+    left: -50vw;
+    z-index: 0;
+    /* Behind everything */
+    opacity: 0.05;
+    pointer-events: none;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.marquee-text {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 15rem;
+    color: transparent;
+    -webkit-text-stroke: 2px #fff;
+    display: inline-block;
+    animation: marqueeScroll 20s linear infinite;
+}
+
+@keyframes marqueeScroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* --- Layout --- */
+.app-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* --- Sidebar Navigation (Floating Pill Dock - Acid) --- */
+.sidebar {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 20px;
+    height: auto;
+    min-height: 600px;
+    max-height: 90vh;
+    width: 80px;
+    background: rgba(10, 10, 10, 0.6);
+    /* Darker Glass */
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    /* Stronger Shadow */
+    z-index: 1000;
+    transition: width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem 0;
+    overflow: hidden;
+}
+
+.sidebar:hover {
+    width: 280px;
+    background: rgba(10, 10, 10, 0.9);
+}
+
+.brand {
+    width: 100%;
+    padding: 0 20px;
+    margin-bottom: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.brand-logo {
+    width: 40px;
+    height: 40px;
+    background: var(--accent-color);
+    /* Acid Lime */
+    border-radius: 8px;
+    /* Sharper */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    /* Black Icon on Lime */
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    box-shadow: 0 0 15px rgba(204, 255, 0, 0.4);
+    /* Glow */
+}
+
+.brand-text {
+    font-family: 'Syne', sans-serif;
+    /* Shocking Font */
+    font-size: 1.8rem;
+    font-weight: 800;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.4s ease 0.1s;
+    letter-spacing: -1px;
+}
+
+.sidebar:hover .brand-text {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    width: 100%;
+    padding: 0 10px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    position: relative;
+    font-family: 'Syne', sans-serif;
+    text-transform: uppercase;
+}
+
+/* Icon Container to fix width/position stability */
+.nav-item i {
+    width: 40px;
+    /* Fixed container width matching brand logo area */
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    /* CRITICAL: Prevent icon squash */
+    transition: all 0.3s ease;
+    color: #666;
+}
+
+/* Text Handling */
+.nav-item span {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+}
+
+.sidebar:hover .nav-item span {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Hover States */
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
+}
+
+.nav-item:hover i {
+    color: var(--accent-color);
+    transform: scale(1.1);
+}
+
+/* Active State Design - Floating Box behind Icon */
+.nav-item.active {
+    background: var(--accent-color);
+    color: #000;
+    /* Contrast */
+    box-shadow: 0 0 20px rgba(204, 255, 0, 0.3);
+}
+
+.nav-item.active i {
+    color: #000;
+}
+
+.nav-item.active::before {
+    /* Remove old sidebar line */
+    content: none;
+}
+
+/* --- Main Content Area --- */
+.main-content {
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+    padding: 0;
+    transition: margin-left var(--transition-speed) var(--ease-out-expo),
+        width var(--transition-speed) var(--ease-out-expo);
+    min-height: 200vh;
+    /* Allow scroll for testing */
+}
+
+/* --- Hero Section (Shocking) --- */
+.hero-section {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 4rem;
+    overflow: hidden;
+}
+
+.hero-bg-text {
+    position: absolute;
+    font-family: 'Playfair Display', serif;
+    font-size: 15vw;
+    font-weight: 700;
+    color: rgba(0, 0, 0, 0.03);
+    z-index: -1;
+    white-space: nowrap;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.hero-content {
+    text-align: center;
+    z-index: 10;
+}
+
+.hero-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 8rem;
+    /* Massive */
+    font-weight: 800;
+    line-height: 0.9;
+    margin-bottom: 2rem;
+    opacity: 0;
+    /* GSAP will handle reveal */
+    transform: translateY(50px);
+    position: relative;
+    z-index: 10;
+    mix-blend-mode: exclusion;
+    /* Cool effect */
+}
+
+.hero-title span {
+    display: block;
+    color: transparent;
+    -webkit-text-stroke: 2px #fff;
+    /* Outline style */
+}
+
+.hero-title span:first-child {
+    color: #fff;
+    -webkit-text-stroke: 0;
+}
+
+.hero-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+    opacity: 0;
+    transform: translateY(30px);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* --- Gallery Grid (Acid Masonry) --- */
+.gallery-section {
+    padding: 4rem;
+    background: transparent;
+    /* Remove white bg */
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    margin-top: 0;
+    position: relative;
+    z-index: 20;
+    box-shadow: none;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+}
+
+.gallery-item {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    /* Maintain aspect ratio approach or allow varied heights? 
+       Using aspect-ratio for consistency in grid, or auto for masonry if JS handles layout.
+       Let's stick to pure CSS grid for reliability first, or column-count. */
+}
+
+/* Simple CSS Masonry using columns for varied heights */
+.masonry-container {
+    column-count: 3;
+    column-gap: 2rem;
+}
+
+.masonry-item {
+    break-inside: avoid;
+    margin-bottom: 2rem;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    transform: translateY(50px);
+    /* Initial state for scroll trigger */
+    opacity: 0;
+}
+
+.masonry-item img {
+    width: 100%;
+    display: block;
+    transition: transform 0.7s var(--ease-out-expo);
+    will-change: transform;
+}
+
+.masonry-item:hover img {
+    transform: scale(1.1);
+}
+
+.item-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.5rem;
+}
+
+.masonry-item:hover .item-overlay {
+    opacity: 1;
+}
+
+.item-title {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+    transform: translateY(10px);
+    transition: transform 0.4s ease;
+}
+
+.masonry-item:hover .item-title {
+    transform: translateY(0);
+}
+
+/* --- Modal (Fullscreen Stunning) --- */
+.full-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 9999;
+    padding: 0;
+    display: flex;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+.full-modal.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-close {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 10001;
+    mix-blend-mode: difference;
+}
+
+.modal-content-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+.modal-img-container {
+    flex: 2;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.modal-img-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.modal-details {
+    flex: 1;
+    background: #111;
+    color: #fff;
+    padding: 4rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transform: translateX(100%);
+    transition: transform 0.6s var(--ease-out-expo);
+}
+
+.full-modal.active .modal-details {
+    transform: translateX(0);
+}
+
+/* --- Collection Stack Effect --- */
+.masonry-item.is-collection {
+    isolation: isolate;
+}
+
+.masonry-item.is-collection::before,
+.masonry-item.is-collection::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    /* Border effect */
+    border-radius: 16px;
+    z-index: -1;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.4s ease;
+}
+
+.masonry-item.is-collection::before {
+    transform: rotate(3deg);
+    background: #f0f0f0;
+}
+
+.masonry-item.is-collection::after {
+    transform: rotate(-3deg);
+    background: #e0e0e0;
+}
+
+.masonry-item.is-collection:hover::before {
+    transform: rotate(6deg) translate(5px, 5px);
+}
+
+.masonry-item.is-collection:hover::after {
+    transform: rotate(-6deg) translate(-5px, 5px);
+}
+
+/* --- Filmstrip Modal --- */
+.modal-filmstrip {
+    margin-top: auto;
+    /* Push to bottom */
+    width: 100%;
+    height: 80px;
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 10px 0;
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.modal-filmstrip::-webkit-scrollbar {
+    display: none;
+    /* Chrome */
+}
+
+.filmstrip-thumb {
+    height: 100%;
+    aspect-ratio: 1/1;
+    /* Square thumbnails */
+    border-radius: 8px;
+    object-fit: cover;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.filmstrip-thumb:hover {
+    opacity: 0.8;
+    transform: translateY(-2px);
+}
+
+.filmstrip-thumb.active {
+    opacity: 1;
+    border-color: #ff4b1f;
+    box-shadow: 0 0 10px rgba(255, 75, 31, 0.4);
+}
+
+/* --- Ambient Effects --- */
+.ambient-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2;
+    background: radial-gradient(circle at 10% 20%, rgba(255, 75, 31, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.05) 0%, transparent 40%);
+    pointer-events: none;
+    animation: pulseAmbient 10s infinite alternate;
+}
+
+@keyframes pulseAmbient {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+}
+
+.noise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9000;
+    opacity: 0.03;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .masonry-container {
+        column-count: 2;
+    }
+
+    .sidebar {
+        width: 0;
+        padding: 0;
+    }
+
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    /* Mobile Nav would need a trigger, we can handle that later or now. 
+       Let's stick to desktop-first "Advanced" feel for now but ensure mobile works via a bottom bar or top burger */
+}

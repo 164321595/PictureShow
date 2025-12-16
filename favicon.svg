@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff9f40;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Rounded Square Background -->
+  <rect x="0" y="0" width="512" height="512" rx="100" ry="100" fill="url(#grad1)" />
+  
+  <!-- FontAwesome Solid Camera Icon (Modified) -->
+  <!-- We separate the body path and overlay a gradient circle for the lens center -->
+  <g transform="translate(56, 56) scale(0.78125)">
+    <!-- 1. Solid White Body -->
+    <path fill="white" d="M512 144v288c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V144c0-26.5 21.5-48 48-48h88l12.3-32.9c7-18.7 24.9-31.1 44.9-31.1h125.5c20 0 37.9 12.4 44.9 31.1L376 96h88c26.5 0 48 21.5 48 48z"/>
+    
+    <!-- 2. Lens Center (Simulated Transparency with Gradient Fill) -->
+    <!-- Matches background gradient to look 'transparent' -->
+    <circle cx="256" cy="288" r="88" fill="url(#grad1)" />
+  </g>
+</svg>
