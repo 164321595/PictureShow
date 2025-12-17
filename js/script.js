@@ -16,6 +16,58 @@ function initApp() {
     loadPhotos();
     initAnimations();
     setupStaticEventListeners();
+    setupMobileSidebarToggle();
+    setupWindowResizeHandler();
+}
+
+// 处理窗口大小改变事件
+function setupWindowResizeHandler() {
+    window.addEventListener('resize', function () {
+        const sidebar = document.querySelector('.sidebar');
+        // 如果从移动端切换到桌面端，移除expanded类
+        if (window.innerWidth > 768) {
+            sidebar.classList.remove('expanded');
+        }
+    });
+}
+
+// 设置移动端侧边栏切换功能
+// 设置移动端侧边栏切换功能
+function setupMobileSidebarToggle() {
+    const sidebar = document.querySelector('.sidebar');
+    const toggleBtn = document.querySelector('.mobile-toggle-btn');
+
+    if (!sidebar) return;
+
+    // 仅在移动端生效
+    if (window.innerWidth <= 768) {
+
+        // 1. Toggle Button Click
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                sidebar.classList.toggle('expanded');
+            });
+        }
+
+        // 2. Click Outside to Close
+        document.addEventListener('click', (e) => {
+            if (sidebar.classList.contains('expanded') &&
+                !sidebar.contains(e.target) &&
+                !e.target.closest('.mobile-toggle-btn')) {
+
+                sidebar.classList.remove('expanded');
+            }
+        });
+
+        // 3. Click Nav Item to Close
+        const navItems = sidebar.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                sidebar.classList.remove('expanded');
+            });
+        });
+    }
 }
 
 // --- GSAP Animations ---
@@ -126,9 +178,23 @@ function generateDynamicFilters(photos) {
             <span>${cat}</span>
         `;
 
+        // 添加触摸和点击事件支持，确保在移动设备上正常工作
         link.addEventListener('click', (e) => {
             e.preventDefault();
             toggleCategory(cat, link);
+        });
+
+        // 添加触摸事件支持，提高移动端兼容性
+        link.addEventListener('touchstart', (e) => {
+            // 不阻止默认行为，但阻止事件冒泡
+            e.stopPropagation();
+            toggleCategory(cat, link);
+        });
+
+        // 防止移动端点击时的默认行为和页面滚动
+        link.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
         });
 
         container.appendChild(link);
@@ -203,8 +269,22 @@ function renderGallery(photos) {
             </div>
         `;
 
-        // Interaction
+        // Interaction - 支持桌面端和移动端
         item.addEventListener('click', () => openModal(photo));
+
+        // 添加触摸事件支持，提高移动端兼容性
+        item.addEventListener('touchstart', (e) => {
+            // 防止事件冒泡
+            e.stopPropagation();
+        });
+
+        item.addEventListener('touchend', (e) => {
+            // 阻止默认行为，防止页面滚动
+            e.preventDefault();
+            e.stopPropagation();
+            // 打开模态框
+            openModal(photo);
+        });
 
         // Hover Slideshow for Collections
         if (photo.isCollection && photo.collectionImages && photo.collectionImages.length > 1) {
@@ -260,8 +340,29 @@ function setupStaticEventListeners() {
     // Home Button (Reset)
     const homeBtn = document.getElementById('nav-all');
     if (homeBtn) {
+        // 添加点击事件
         homeBtn.addEventListener('click', (e) => {
             e.preventDefault();
+            activeCategories.clear();
+            showFavoritesOnly = false;
+
+            // Visual reset
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('[data-type="favorite"]').forEach(btn => btn.classList.remove('active'));
+            homeBtn.classList.add('active');
+
+            applyFilters();
+        });
+
+        // 添加触摸事件支持，提高移动端兼容性
+        homeBtn.addEventListener('touchstart', (e) => {
+            e.stopPropagation();
+        });
+
+        homeBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
             activeCategories.clear();
             showFavoritesOnly = false;
 
@@ -277,8 +378,30 @@ function setupStaticEventListeners() {
     // Favorites Button
     const favBtn = document.querySelector('[data-type="favorite"]');
     if (favBtn) {
+        // 添加点击事件
         favBtn.addEventListener('click', (e) => {
             e.preventDefault();
+            showFavoritesOnly = !showFavoritesOnly;
+
+            if (showFavoritesOnly) {
+                favBtn.classList.add('active');
+                document.getElementById('nav-all').classList.remove('active');
+            } else {
+                favBtn.classList.remove('active');
+                if (activeCategories.size === 0) document.getElementById('nav-all').classList.add('active');
+            }
+            applyFilters();
+        });
+
+        // 添加触摸事件支持，提高移动端兼容性
+        favBtn.addEventListener('touchstart', (e) => {
+            e.stopPropagation();
+        });
+
+        favBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
             showFavoritesOnly = !showFavoritesOnly;
 
             if (showFavoritesOnly) {
@@ -294,7 +417,20 @@ function setupStaticEventListeners() {
 
     // Modal Close
     const closeBtn = document.querySelector('.modal-close');
-    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeModal);
+
+        // 添加触摸事件支持，提高移动端兼容性
+        closeBtn.addEventListener('touchstart', (e) => {
+            e.stopPropagation();
+        });
+
+        closeBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            closeModal();
+        });
+    }
 
     // Global Key Events
     document.addEventListener('keydown', (e) => {
@@ -347,7 +483,26 @@ function openModal(photo) {
         setTimeout(() => {
             const thumbs = modal.querySelectorAll('.filmstrip-thumb');
             thumbs.forEach(thumb => {
+                // 添加点击事件
                 thumb.addEventListener('click', (e) => {
+                    const idx = parseInt(e.target.dataset.index);
+                    currentCollectionIndex = idx;
+                    updateModalImage();
+
+                    // Update active state
+                    thumbs.forEach(t => t.classList.remove('active'));
+                    e.target.classList.add('active');
+                });
+
+                // 添加触摸事件支持，提高移动端兼容性
+                thumb.addEventListener('touchstart', (e) => {
+                    e.stopPropagation();
+                });
+
+                thumb.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
                     const idx = parseInt(e.target.dataset.index);
                     currentCollectionIndex = idx;
                     updateModalImage();
@@ -367,6 +522,9 @@ function openModal(photo) {
     // Filmstrip largely replaces them, but keys still work basically.
 
     modal.classList.add('active');
+
+    // 添加移动端手势滑动支持
+    setupModalSwipeGestures(modal);
 }
 
 function updateModalImage() {
@@ -394,4 +552,42 @@ function navigateCollection(direction) {
 function closeModal() {
     document.querySelector('.full-modal').classList.remove('active');
     currentModalPhoto = null;
+}
+
+// 设置模态框手势滑动支持
+function setupModalSwipeGestures(modal) {
+    let startX = 0;
+    let startY = 0;
+
+    // 触摸开始
+    modal.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+    });
+
+    // 触摸结束
+    modal.addEventListener('touchend', (e) => {
+        if (!startX || !startY) return;
+
+        const endX = e.changedTouches[0].clientX;
+        const endY = e.changedTouches[0].clientY;
+
+        const diffX = startX - endX;
+        const diffY = startY - endY;
+
+        // 检查是否是水平滑动且滑动距离足够
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+            if (diffX > 0) {
+                // 向左滑动，显示下一张图片
+                navigateCollection(1);
+            } else {
+                // 向右滑动，显示上一张图片
+                navigateCollection(-1);
+            }
+        }
+
+        // 重置起始位置
+        startX = 0;
+        startY = 0;
+    });
 }
