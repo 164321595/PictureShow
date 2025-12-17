@@ -33,41 +33,45 @@ function setupWindowResizeHandler() {
 
 // 设置移动端侧边栏切换功能
 // 设置移动端侧边栏切换功能
+// 设置移动端侧边栏切换功能
 function setupMobileSidebarToggle() {
     const sidebar = document.querySelector('.sidebar');
     const toggleBtn = document.querySelector('.mobile-toggle-btn');
 
     if (!sidebar) return;
 
-    // 仅在移动端生效
-    if (window.innerWidth <= 768) {
+    // Remove viewport check to ensure listeners are ALWAYS attached.
+    // CSS handles visibility of the button and sidebar state on desktop/mobile.
 
-        // 1. Toggle Button Click
-        if (toggleBtn) {
-            toggleBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                sidebar.classList.toggle('expanded');
-            });
+    // 1. Toggle Button Click
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sidebar.classList.toggle('expanded');
+        });
+    }
+
+    // 2. Click Outside to Close
+    document.addEventListener('click', (e) => {
+        // Only run logic if sidebar is actually expanded (which only happens on mobile or manual trigger)
+        if (sidebar.classList.contains('expanded') &&
+            !sidebar.contains(e.target) &&
+            !e.target.closest('.mobile-toggle-btn')) {
+
+            sidebar.classList.remove('expanded');
         }
+    });
 
-        // 2. Click Outside to Close
-        document.addEventListener('click', (e) => {
-            if (sidebar.classList.contains('expanded') &&
-                !sidebar.contains(e.target) &&
-                !e.target.closest('.mobile-toggle-btn')) {
-
+    // 3. Click Nav Item to Close
+    const navItems = sidebar.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            // Only relevant if expanded
+            if (sidebar.classList.contains('expanded')) {
                 sidebar.classList.remove('expanded');
             }
         });
-
-        // 3. Click Nav Item to Close
-        const navItems = sidebar.querySelectorAll('.nav-item');
-        navItems.forEach(item => {
-            item.addEventListener('click', () => {
-                sidebar.classList.remove('expanded');
-            });
-        });
-    }
+    });
 }
 
 // --- GSAP Animations ---
